@@ -4,9 +4,9 @@ namespace MudBlazor.Extensions.Settings;
 
 public abstract class Enumeration : IComparable
 {
-    protected Enumeration(int value, string name)
+    protected Enumeration(int? value, string name)
     {
-        Value = value;
+        Value = value ?? GetAll<ToolBarOption>().Count();
         Name = name;
     }
 
@@ -14,15 +14,9 @@ public abstract class Enumeration : IComparable
 
     public int Value { get; }
 
-    public int CompareTo(object? other)
-    {
-        return Value.CompareTo(((Enumeration) other!).Value);
-    }
+    public int CompareTo(object? other) => Value.CompareTo(((Enumeration) other!).Value);
 
-    public override string ToString()
-    {
-        return Name;
-    }
+    public override string ToString() => Name;
 
     public static IEnumerable<T> GetAll<T>() where T : Enumeration
     {
@@ -45,15 +39,10 @@ public abstract class Enumeration : IComparable
         return typeMatches && valueMatches;
     }
 
-    public override int GetHashCode()
-    {
-        return Value.GetHashCode();
-    }
+    public override int GetHashCode() => Value.GetHashCode();
 
-    public static int AbsoluteDifference(Enumeration firstValue, Enumeration secondValue)
-    {
-        return Math.Abs(firstValue.Value - secondValue.Value);
-    }
+    public static int AbsoluteDifference(Enumeration firstValue, Enumeration secondValue) =>
+        Math.Abs(firstValue.Value - secondValue.Value);
 
     public static bool TryGetFromValueOrName<T>(
         string valueOrName,

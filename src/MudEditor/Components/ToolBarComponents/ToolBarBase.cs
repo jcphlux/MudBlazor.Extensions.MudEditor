@@ -1,21 +1,55 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor.Extensions.Settings;
 
 namespace MudBlazor.Extensions.ToolBarComponents;
 
-public class ToolBarBase<T> : ComponentBase
+public class ToolBarBase : ComponentBase, IDisposable
 {
-    [Parameter]
-    public ToolBarOption Options { get; set; } = null!;
+    protected bool Active;
+    protected Color ActiveColor = Color.Primary;
+    protected Color Color = Color.Default;
+
+    [CascadingParameter]
+    public MudEditor Editor { get; set; } = null!;
+
+    [CascadingParameter]
+    public ToolBarOption Option { get; set; } = null!;
 
     [Parameter]
-    public Color ActiveColor { get; set; } = Color.Primary;
+    public virtual ToolBarValue Value { get; set; } = new();
 
-    [Parameter]
-    public Color DefaultColor { get; set; } = Color.Default;
 
-    [Parameter]
-    public bool Active { get; set; }
+    public void Dispose()
+    {
+        if (!string.IsNullOrEmpty(Option.Attrib) || Option.AllowNull)
+            Editor.OnFormatChange -= OnFormatChange;
+    }
 
-    [Parameter]
-    public virtual T? Value { get; set; }
+    protected override void OnParametersSet()
+    {
+        Value = new();
+        Color = Editor.ToolBarColor;
+        ActiveColor = Editor.ToolBarActiveColor;
+        if (!string.IsNullOrEmpty(Option.Attrib) || Option.AllowNull)
+            Editor.OnFormatChange += OnFormatChange;
+    }
+
+    private void OnFormatChange(Dictionary<string, ToolBarValue> formats)
+    {
+        if (!formats.ContainsKey(Option.Attrib) || Option.AttribValue == null && !Option.AllowNull)
+        {
+            Value.Clear();
+            Active = false;
+        }
+        else
+        {
+            Value = formats[Option.Attrib];
+            Active = Value.IsActive(Option.AttribValue);
+        }
+
+        OnValueChanged();
+        StateHasChanged();
+    }
+
+    protected virtual void OnValueChanged() { }
 }

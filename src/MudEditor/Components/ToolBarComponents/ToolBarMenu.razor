@@ -1,16 +1,27 @@
-﻿@inherits ToolBarExpanded
+﻿@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
 
-<MudMenu Dense="true" Icon="@_selectedOption.Icon" Color="@(Active ? ActiveColor : DefaultColor)" ListClass="py-0" PopoverClass="pa-0" Variant="Variant.Outlined">
-    <MudButtonGroup Variant="Variant.Outlined" VerticalAlign="true">
-        @foreach (var option in Options.Options!)
-        {
-            <MudIconButton Class="pa-0" Color="@(_selectedOption.Equals(option) || Active ? ActiveColor : DefaultColor)" Icon="@option.Icon" OnClick="@(() => SelectSetting(option))" Size="Size.Small" Title="@option.Label"></MudIconButton>
-        }
-    </MudButtonGroup>
+<MudMenu Dense="true" @ref="_menu" Icon="@_selectedOption.Icon" Color="@(Active ? ActiveColor : Color)" ListClass="py-0" PopoverClass="pa-0" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomLeft">
+    <CascadingValue Value="@Editor">
+        <CascadingValue Value="@Option">
+            <ToolBarBtnGroup VerticalAlign="true"/>
+        </CascadingValue>
+    </CascadingValue>
 </MudMenu>
 
 @code {
+    private MudMenu _menu = null!;
+    private ToolBarOption _selectedOption = null!;
 
+    protected override void OnParametersSet() {
+        _selectedOption = Option.Options![0];
+        base.OnParametersSet();
+    }
+
+    protected override void OnValueChanged() {
+        _selectedOption = Option.Options!.FirstOrDefault(o => Value.IsActive(o.AttribValue), Option.Options![0]);
+        _menu.CloseMenu();
+
+    }
 
 }

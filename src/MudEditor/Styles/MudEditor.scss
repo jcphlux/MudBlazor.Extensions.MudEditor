@@ -1,6 +1,7 @@
 ﻿.mud-editor ::deep {
     @import 'quill-css';
 
+
     .mud-editor-toolbar {
         .mud-input-control {
             margin-top: 0;
@@ -19,11 +20,9 @@
         }
 
 
-        .mud-menu  {
+        .mud-menu {
             .mud-button-root {
                 padding: 0;
-
-
             }
         }
 
@@ -48,6 +47,7 @@
         min-height: 42px;
 
         .ql-editor {
+            @import './highlight.scss';
             flex-grow: 1;
             overflow: visible;
         }

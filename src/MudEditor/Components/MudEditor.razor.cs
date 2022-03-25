@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor.Extensions.Settings;
 using MudBlazor.Utilities;
 using static MudBlazor.Extensions.ToolBarOption;
 
@@ -74,6 +76,12 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     [Parameter]
     public string? Width { get; set; }
 
+    [Parameter]
+    public Color ToolBarActiveColor { get; set; } = Color.Secondary;
+
+    [Parameter]
+    public Color ToolBarColor { get; set; } = Color.Default;
+
     public async ValueTask DisposeAsync()
     {
         if (JsRuntime != null && _dotNetObjectReference != null)
@@ -84,6 +92,8 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
                 Placeholder);
     }
 
+    internal event Action<Dictionary<string, ToolBarValue>> OnFormatChange = null!;
+
     protected override void OnParametersSet()
     {
         _toolBarOption = ToolBarOptions == null ? Full : CustomToolBarOption(ToolBarOptions);
@@ -93,8 +103,6 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     {
         if (!firstRender) return;
 
-        // _module ??= await JsRuntime!.InvokeAsync<IJSObjectReference>("import",
-        // "./_content/MudEditor/MudEditor.js");
         _dotNetObjectReference = DotNetObjectReference.Create(this);
         _quillEditor = await JsRuntime!.InvokeAsync<IJSObjectReference>(
             "MudEditor.create",
@@ -108,4 +116,18 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     {
         var w = args;
     }
+
+    [JSInvokable]
+    public void QuillGetFormat(Dictionary<string, JsonValue> jsonFormats)
+    {
+        var formats = new Dictionary<string, ToolBarValue>();
+
+        foreach (var (key, value) in jsonFormats)
+            formats.Add(key, ToolBarValue.FromJson(value));
+
+        OnFormatChange(formats);
+    }
+
+    internal async Task SetFormat(string attrib, object? value) =>
+        await _quillEditor!.InvokeVoidAsync("format", attrib, value);
 }

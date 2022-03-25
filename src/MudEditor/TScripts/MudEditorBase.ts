@@ -3,12 +3,12 @@
 class MudEditorBase {
     private editors = new Map<number, MudEditor>();
 
-    create = (dotnetHelper, quillElement, placeholder):MudEditor => {
+    create = (dotnetHelper, quillElement, placeholder): MudEditor => {
         var editor = new MudEditor(dotnetHelper, quillElement, placeholder);
 
         this.editors.set(dotnetHelper._id, editor);
 
-        return editor.quill;
+        return editor;
     };
 
     remove = (dotnetHelper) => {
@@ -19,5 +19,6 @@ class MudEditorBase {
         }
     };
 }
+
 
 window["MudEditor"] = new MudEditorBase();

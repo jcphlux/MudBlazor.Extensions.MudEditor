@@ -1,10 +1,11 @@
 ﻿var path = require("path");
 
+const webpack = require("webpack");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
 const FileManagerPlugin = require("filemanager-webpack-plugin");
 
 module.exports = {
-    mode: "production",
+    mode: "development",
     entry: {
         MudEditor: "./TScripts/MudEditorBase.ts",
         MudEditorStyles: "./Styles/MudEditor.scss"
@@ -15,9 +16,7 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'quill-css': path.resolve(__dirname, "./node_modules/quill/dist/quill.core.css"),
-/*            'parchment': path.resolve(__dirname, "./node_modules/parchment/src/parchment.ts"),*/
-            'quill$': path.resolve(__dirname, "./node_modules/quill/quill.js")
+            'quill-css': path.resolve(__dirname, "./node_modules/quill/dist/quill.core.css")
         },
         extensions: [".ts", ".js", ".scss", ".css"]
     },
@@ -64,10 +63,11 @@ module.exports = {
             events: {
                 onEnd: {
                     copy: [
-                        { source: './wwwroot/MudEditor.min.css', destination: './Components/MudEditor.razor.css' }
+                        { source: "./wwwroot/MudEditor.min.css", destination: "./Components/MudEditor.razor.css" }
                     ]
                 }
             }
-        })
+        }),
+        new webpack.ProvidePlugin({ "window.hljs": "highlight.js/lib/common" })
     ]
 };
