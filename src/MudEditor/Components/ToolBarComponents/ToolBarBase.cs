@@ -7,7 +7,7 @@ public class ToolBarBase : ComponentBase, IDisposable
 {
     protected bool Active;
     protected Color ActiveColor = Color.Primary;
-    protected Color Color = Color.Default;
+    protected Color Color = Color.Inherit;
 
     [CascadingParameter]
     public MudEditor Editor { get; set; } = null!;

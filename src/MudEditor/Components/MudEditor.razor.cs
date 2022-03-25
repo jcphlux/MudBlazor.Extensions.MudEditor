@@ -77,10 +77,13 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     public string? Width { get; set; }
 
     [Parameter]
-    public Color ToolBarActiveColor { get; set; } = Color.Secondary;
+    public Color ToolBarActiveColor { get; set; } = Color.Primary;
 
     [Parameter]
-    public Color ToolBarColor { get; set; } = Color.Default;
+    public Color ToolBarColor { get; set; } = Color.Inherit;
+
+    [Parameter]
+    public Color ToolBarBackgroundColor { get; set; } = Color.Surface;
 
     public async ValueTask DisposeAsync()
     {
