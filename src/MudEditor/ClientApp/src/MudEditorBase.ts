@@ -3,7 +3,7 @@
 class MudEditorBase {
     private editors = new Map<number, MudEditor>();
 
-    create = (dotnetHelper, quillElement, placeholder): MudEditor => {
+    create = (dotnetHelper: any, quillElement: any, placeholder: any): MudEditor => {
         var editor = new MudEditor(dotnetHelper, quillElement, placeholder);
 
         this.editors.set(dotnetHelper._id, editor);
@@ -11,10 +11,10 @@ class MudEditorBase {
         return editor;
     };
 
-    remove = (dotnetHelper) => {
+    remove = (dotnetHelper: any) => {
         const id = dotnetHelper._id;
         if (this.editors.has(id)) {
-            this.editors.get(id).stuff();
+            this.editors.get(id)?.stuff();
             this.editors.delete(id);
         }
     };

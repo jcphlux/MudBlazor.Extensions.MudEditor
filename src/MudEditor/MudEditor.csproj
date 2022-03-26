@@ -8,15 +8,6 @@
 		<RootNamespace>MudBlazor.Extensions</RootNamespace>
 	</PropertyGroup>
 
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="npm install" WorkingDirectory="$(ProjectDir)" />
-		<Exec Command="npm run build" WorkingDirectory="$(ProjectDir)" />
-	</Target>
-
-	<ItemGroup>
-		<Content Remove="TScript\**" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
@@ -25,8 +16,31 @@
 	  <PackageReference Include="MudBlazor" Version="6.0.7" />
 	</ItemGroup>
 
+	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('ClientApp\node_modules') ">
+		<!-- Ensure Node.js is installed -->
+		<Exec Command="node --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+		<Exec WorkingDirectory="ClientApp" Command="npm install" />
+	</Target>
+
+	<Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
+		<Exec WorkingDirectory="ClientApp" Command="npm run build-dev" />
+	</Target>
+
+	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+		<Exec WorkingDirectory="ClientApp" Command="npm install" />
+		<Exec WorkingDirectory="ClientApp" Command="npm run build" />
+	</Target>
+
 	<ItemGroup>
-	  <Folder Include="CustomIcons\" />
+		<None Remove="ClientApp\node_modules\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Folder Include="wwwroot\" />
 	</ItemGroup>
 </Project>

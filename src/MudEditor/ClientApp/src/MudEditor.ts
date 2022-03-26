@@ -3,7 +3,7 @@
 export class MudEditor {
     private quill;
 
-    constructor(private dotnetHelper, quillElement, placeholder) {
+    constructor(private dotnetHelper: any, quillElement: any, placeholder: any) {
         const options = { modules: { syntax: true }, placeholder: placeholder };
 
         this.quill = new Quill(quillElement, options);
@@ -11,7 +11,7 @@ export class MudEditor {
     }
 
 
-    private editorChanged = (eventName, ...args) => {
+    private editorChanged = (eventName: any, ...args: any[]) => {
         const formats = this.quill.getFormat();
         console.log(formats);
         this.dotnetHelper.invokeMethodAsync("QuillGetFormat", formats);
@@ -21,7 +21,7 @@ export class MudEditor {
         this.quill.off("editor-change", this.editorChanged);
     }
 
-    format = (attrib, value) => {
+    format = (attrib: string, value:any) => {
         
         this.quill.format(attrib, value);
     }
