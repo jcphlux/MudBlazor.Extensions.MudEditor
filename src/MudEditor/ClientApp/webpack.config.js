@@ -1,14 +1,10 @@
 ﻿var path = require("path");
-
 const webpack = require("webpack");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
-const FileManagerPlugin = require("filemanager-webpack-plugin");
+const { merge } = require('webpack-merge');
+const entries = require('./webpack.entries.js');
 
-module.exports = {
-    entry: {
-        MudEditor: path.resolve(__dirname, "./src/MudEditorBase.ts"),
-        MudEditorStyles: path.resolve(__dirname, "./styles/MudEditor.scss")
-    },
+module.exports = merge(entries,{
     optimization: {
         runtimeChunk: false
     },
@@ -57,15 +53,6 @@ module.exports = {
     },
     plugins: [
         new RemoveEmptyScriptsPlugin(),
-        new FileManagerPlugin({
-            events: {
-                onEnd: {
-                    copy: [
-                        { source: "../wwwroot/MudEditor.min.css", destination: "../Components/MudEditor.razor.css" }
-                    ]
-                }
-            }
-        }),
         new webpack.ProvidePlugin({ "window.hljs": "highlight.js/lib/common" })
     ]
-};
+});

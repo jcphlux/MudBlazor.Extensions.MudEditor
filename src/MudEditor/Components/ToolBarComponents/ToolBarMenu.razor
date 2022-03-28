@@ -1,27 +1,36 @@
-﻿@inherits ToolBarBase
+﻿@using MudBlazor.Utilities
+@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
 
-<MudMenu Dense="true" @ref="_menu" Icon="@_selectedOption.Icon" Color="@(Active ? ActiveColor : Color)" ListClass="py-0" PopoverClass="pa-0" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomLeft">
-    <CascadingValue Value="@Editor">
-        <CascadingValue Value="@Option">
-            <ToolBarBtnGroup VerticalAlign="true"/>
-        </CascadingValue>
-    </CascadingValue>
+<MudMenu Dense="true" Class="@Classname" PopoverClass="@Classname" AnchorOrigin="Origin.BottomLeft">
+    <ActivatorContent>
+        <MudIconButton Variant="Variant.Outlined" Color="@(Active? ActiveColor: Color)" Icon="@_selectedOption.Icon" Size="Size.Small" Title="@_selectedOption.Label" ></MudIconButton>
+    </ActivatorContent>
+    <ChildContent>
+    @foreach (var option in Option.Options) {
+        <MudMenuItem  OnClick="@(() => ItemSelected(option))">
+            <MudIcon Icon="@option.Icon" Color="@Editor.ToolBarColor" Size="Size.Small"></MudIcon>
+        </MudMenuItem>
+    }
+    </ChildContent>
 </MudMenu>
 
 @code {
-    private MudMenu _menu = null!;
+    private string Classname => new CssBuilder()
+        .AddClass("mud-editor-toolbar-menu")
+        .AddClass("pa-0")
+        .AddClass("ma-0")
+        .Build();
+
     private ToolBarOption _selectedOption = null!;
 
-    protected override void OnParametersSet() {
-        _selectedOption = Option.Options![0];
-        base.OnParametersSet();
+    private async void ItemSelected(ToolBarOption option) {
+        await Editor.SetFormat(Option.Attrib, Value == option.AttribValue ? null : option.AttribValue);
     }
 
     protected override void OnValueChanged() {
-        _selectedOption = Option.Options!.FirstOrDefault(o => Value.IsActive(o.AttribValue), Option.Options![0]);
-        _menu.CloseMenu();
-
+        _selectedOption = Value == null ? 
+            Option.Options.FirstOrDefault(o => o.AttribValue == null, Option.Options[0]) : 
+            Option.Options.First(o=> Value!.Equals(o.AttribValue));
     }
-
 }

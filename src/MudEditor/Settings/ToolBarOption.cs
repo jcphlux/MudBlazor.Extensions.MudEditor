@@ -8,9 +8,9 @@ namespace MudBlazor.Extensions;
 
 public class ToolBarOption : Enumeration
 {
-    public static readonly ToolBarOption FontList = new(List, "font", allowNull: true);
+    public static readonly ToolBarOption FontList = new(List, "font");
 
-    public static readonly ToolBarOption SizeList = new(List, "size", allowNull: true);
+    public static readonly ToolBarOption SizeList = new(List, "size");
 
     public static readonly ToolBarOption BoldStyle = new(Btn, "bold", "Bold", Icons.Filled.FormatBold, true);
     public static readonly ToolBarOption ItalicStyle = new(Btn, "italic", "Italic", Icons.Filled.FormatItalic, true);
@@ -25,10 +25,10 @@ public class ToolBarOption : Enumeration
         options: new[] {BoldStyle, ItalicStyle, UnderlineStyle, StrikethroughStyle});
 
     public static readonly ToolBarOption FontColor = new(ColorPicker, "color", "Font Color",
-        Icons.Filled.FormatColorText, allowNull: true);
+        Icons.Filled.FormatColorText);
 
     public static readonly ToolBarOption BackgroundColor =
-        new(ColorPicker, "background", "Background Color", Icons.Filled.FontDownload, allowNull: true);
+        new(ColorPicker, "background", "Background Color", Icons.Filled.FontDownload);
 
     public static readonly ToolBarOption ColorGroup = new(Group, options: new[] {FontColor, BackgroundColor});
 
@@ -44,7 +44,7 @@ public class ToolBarOption : Enumeration
             allowNull: true);
 
     public static readonly ToolBarOption HeadingExpanded = new(Expanded, "header",
-        options: new[] {Heading1, Heading2, Heading3, Heading4, Heading5, Heading6}, allowNull: true);
+        options: new[] {Heading1, Heading2, Heading3, Heading4, Heading5, Heading6});
 
     public static readonly ToolBarOption Quote = new(Btn, "blockquote", "Quote", Icons.Filled.FormatQuote, true);
 
@@ -57,7 +57,7 @@ public class ToolBarOption : Enumeration
         new(Btn, "list", "Bulleted List", Icons.Filled.FormatListBulleted, "bullet");
 
     public static readonly ToolBarOption ListGroup = new(Group, "list", options: new[]
-        {ListNumbered, ListBulleted}, allowNull: true);
+        {ListNumbered, ListBulleted});
 
     public static readonly ToolBarOption IndentIncrease =
         new(Btn, "indent", "Increase Indent", Icons.Filled.FormatIndentIncrease, 1);
@@ -81,13 +81,13 @@ public class ToolBarOption : Enumeration
         new(Btn, "align", "Justify", Icons.Filled.FormatAlignJustify, "justify");
 
     public static readonly ToolBarOption AlignmentMenu =
-        new(Menu, "align", options: new[] {AlignLeft, AlignCenter, AlignRight, AlignJustify}, allowNull: true);
+        new(Menu, "align", options: new[] {AlignLeft, AlignCenter, AlignRight, AlignJustify});
 
     public static readonly ToolBarOption AlignmentExpanded =
-        new(Expanded, "align", options: new[] {AlignLeft, AlignCenter, AlignRight, AlignJustify}, allowNull: true);
+        new(Expanded, "align", options: new[] {AlignLeft, AlignCenter, AlignRight, AlignJustify});
 
     internal static readonly ToolBarOption
-        Ltr = new(Btn, "direction", "Left to Right", Icons.Filled.FormatTextdirectionLToR, allowNull: true);
+        Ltr = new(Btn, "direction", "Left to Right", Icons.Filled.FormatTextdirectionLToR);
 
     internal static readonly ToolBarOption
         Rtl = new(Btn, "direction", "Right to Left", Icons.Filled.FormatTextdirectionRToL, "rtl");
@@ -119,9 +119,12 @@ public class ToolBarOption : Enumeration
             options: new[]
             {
                 FontList, SizeList, StyleGroup,
-                ColorGroup, HeadingMenu, Quote,
+                ColorGroup, HeadingMenu,
+                Quote,
                 Code, ListGroup, IndentGroup,
-                AlignmentMenu, LtrToggle, MediaGroup,
+                AlignmentMenu,
+                //, LtrToggle,
+                MediaGroup,
                 MathGroup, FormatClear
             });
 
@@ -137,9 +140,7 @@ public class ToolBarOption : Enumeration
         Label = label;
         AllowNull = allowNull;
 
-        if (type.Equals(Btn)) options = new[] {this};
-
-        if (options != null) Options = new(options);
+        Options = new(options ?? Array.Empty<ToolBarOption>());
     }
 
     public ToolBarGroupType Type { get; }
@@ -155,7 +156,7 @@ public class ToolBarOption : Enumeration
     public bool AllowNull { get; }
 
 
-    public ReadOnlyCollection<ToolBarOption>? Options { get; }
+    public ReadOnlyCollection<ToolBarOption> Options { get; }
 
     public static ToolBarOption CustomToolBarOption(ToolBarGroup[] groups)
     {

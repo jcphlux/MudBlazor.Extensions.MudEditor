@@ -20,5 +20,10 @@ class MudEditorBase {
     };
 }
 
+var link = document.createElement("link");
+link.rel = "stylesheet";
+link.href = "_content/MudEditor/MudEditor.min.css";
+document.head.appendChild(link);
+
 
 window["MudEditor"] = new MudEditorBase();

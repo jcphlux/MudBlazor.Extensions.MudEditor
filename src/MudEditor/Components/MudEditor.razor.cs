@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions.Settings;
 using MudBlazor.Utilities;
 using static MudBlazor.Extensions.ToolBarOption;
 
@@ -95,7 +94,7 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
                 Placeholder);
     }
 
-    internal event Action<Dictionary<string, ToolBarValue>> OnFormatChange = null!;
+    internal event Action<Dictionary<string, object>> OnFormatChange = null!;
 
     protected override void OnParametersSet()
     {
@@ -123,10 +122,16 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     [JSInvokable]
     public void QuillGetFormat(Dictionary<string, JsonValue> jsonFormats)
     {
-        var formats = new Dictionary<string, ToolBarValue>();
+        var formats = new Dictionary<string, object>();
 
         foreach (var (key, value) in jsonFormats)
-            formats.Add(key, ToolBarValue.FromJson(value));
+            if (value.TryGetValue(out string? strValue))
+                formats.Add(key, strValue);
+            else if (value.TryGetValue(out int? intValue))
+                formats.Add(key, intValue);
+            else if (value.TryGetValue(out bool? boolValue))
+                formats.Add(key, boolValue);
+
 
         OnFormatChange(formats);
     }

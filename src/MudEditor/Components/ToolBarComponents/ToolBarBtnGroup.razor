@@ -1,8 +1,8 @@
 ﻿@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
 
-<MudButtonGroup Variant="Variant.Outlined" VerticalAlign="@VerticalAlign">
-    @foreach (var option in Option.Options!)
+<MudButtonGroup Variant="Variant.Outlined" Class="pa-0 ma-0" Size="Size.Small">
+    @foreach (var option in Option.Options)
     {
         <CascadingValue Value="@Editor">
             <CascadingValue Value="@option">
@@ -13,6 +13,5 @@
 </MudButtonGroup>
 
 @code {
-    [Parameter]
-    public bool VerticalAlign { get; set; }
+
 }

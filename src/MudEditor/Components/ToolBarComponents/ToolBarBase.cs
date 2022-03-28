@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using MudBlazor.Extensions.Settings;
 
 namespace MudBlazor.Extensions.ToolBarComponents;
 
@@ -7,7 +6,7 @@ public class ToolBarBase : ComponentBase, IDisposable
 {
     protected bool Active;
     protected Color ActiveColor = Color.Primary;
-    protected Color Color = Color.Inherit;
+    protected Color Color = Color.Default;
 
     [CascadingParameter]
     public MudEditor Editor { get; set; } = null!;
@@ -16,7 +15,7 @@ public class ToolBarBase : ComponentBase, IDisposable
     public ToolBarOption Option { get; set; } = null!;
 
     [Parameter]
-    public virtual ToolBarValue Value { get; set; } = new();
+    public virtual object? Value { get; set; }
 
 
     public void Dispose()
@@ -27,24 +26,25 @@ public class ToolBarBase : ComponentBase, IDisposable
 
     protected override void OnParametersSet()
     {
-        Value = new();
         Color = Editor.ToolBarColor;
         ActiveColor = Editor.ToolBarActiveColor;
         if (!string.IsNullOrEmpty(Option.Attrib) || Option.AllowNull)
             Editor.OnFormatChange += OnFormatChange;
+
+        OnValueChanged();
     }
 
-    private void OnFormatChange(Dictionary<string, ToolBarValue> formats)
+    private void OnFormatChange(Dictionary<string, object> formats)
     {
-        if (!formats.ContainsKey(Option.Attrib) || Option.AttribValue == null && !Option.AllowNull)
+        if (!formats.ContainsKey(Option.Attrib))
         {
-            Value.Clear();
+            Value = null;
             Active = false;
         }
         else
         {
             Value = formats[Option.Attrib];
-            Active = Value.IsActive(Option.AttribValue);
+            Active = Value.Equals(Option.AttribValue) || Option.Options.Any(o => Value.Equals(o.AttribValue));
         }
 
         OnValueChanged();

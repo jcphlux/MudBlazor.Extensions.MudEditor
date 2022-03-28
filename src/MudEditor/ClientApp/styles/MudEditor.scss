@@ -1,39 +1,22 @@
-﻿.mud-editor ::deep {
+﻿$editor: mud-editor;
+$toolbar: #{$editor}-toolbar;
+$list: #{$toolbar}-list;
+$menu: #{$toolbar}-menu;
+
+.#{$editor} {
     @import 'quill-css';
 
+    .mud-editor-popover {
+        background-color: red;
+    }
 
-    .mud-editor-toolbar {
-        .mud-input-control {
-            margin-top: 0;
+    .#{$toolbar} {
+        .#{$list} {
             max-width: 130px;
         }
 
-        .mud-input {
-            &.mud-input-outlined.mud-input-adorned-end {
-                padding-right: 5px;
-                padding-inline-end: 5px;
-            }
-
-            > input.mud-input-root-outlined {
-                padding: 3.5px;
-            }
-        }
-
-
-        .mud-menu {
-            .mud-button-root {
-                padding: 0;
-            }
-        }
-
-        .mud-editor-alignment {
-            div.mud-input-slot.mud-input-root-outlined {
-                padding: 3.5px;
-            }
-
-            .mud-input-adornment-end {
-                display: none;
-            }
+        .mud-button-root {
+            padding: 8px 10.35px 10px;
         }
 
         .mud-editor-picker {
@@ -54,15 +37,25 @@
     }
 }
 
-.mud-editor-alignment-popover {
-    .mud-list {
-        padding: 0;
+.mud-popover {
+    &.#{$list} {
+        background-color: blue;
+    }
 
-        .mud-list-item {
-            padding: 0 2.5px;
+    &.#{$menu} {
+        .mud-list.mud-list-padding {
+            padding: 4px 0;
 
-            .mud-list-item-text {
-                margin: 0;
+            .mud-list-item-gutters {
+                padding: 0 9px;
+
+                .mud-list-item-text {
+                    margin: 0;
+
+                    .mud-icon-size-small {
+                        font-size: 1.422rem;
+                    }
+                }
             }
         }
     }

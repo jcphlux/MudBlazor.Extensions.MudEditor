@@ -1,17 +1,22 @@
-﻿@inherits ToolBarBase
+﻿@using MudBlazor.Utilities
+@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
-
-<div class="flex-grow-0">
-    <MudSelect T="string" Value="@("normal")" Dense="true" Variant="Variant.Outlined" AdornmentColor="@Color">
-        @foreach (var item in Items) {
-            <MudSelectItem Value="@item"/>
+<div class="flex-none">
+    <MudSelect T="object" Value="@Value" Variant="Variant.Outlined" ValueChanged="ValueChanged" AdornmentColor="@Color" Dense="true" Margin="Margin.Dense" Class="@Classname" PopoverClass="@Classname">
+        @foreach (var option in Option.Options) {
+            <MudSelectItem Value="@option.AttribValue"></MudSelectItem>
         }
     </MudSelect>
 </div>
 
 @code {
+    private string Classname => new CssBuilder()
+        .AddClass("mud-editor-toolbar-list")
+        .AddClass("pa-0")
+        .AddClass("ma-0")
+        .Build();
 
-    [Parameter]
-    public List<string> Items { get; set; } = new();
+
+    protected async void ValueChanged(object value) => await Editor.SetFormat(Option.Attrib, value.Equals(Value)? null: value);
 
 }

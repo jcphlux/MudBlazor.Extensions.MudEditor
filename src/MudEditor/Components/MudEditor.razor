@@ -1,10 +1,10 @@
 ﻿@namespace MudBlazor.Extensions
 @inherits MudComponentBase
-
+@*<MudPopoverProvider></MudPopoverProvider>*@
 <div class="@Classname">
     <MudPaper Elevation="@Elevation" Height="@Height" MaxHeight="@MaxHeight" MaxWidth="@MaxWidth" MinHeight="@MinHeight" MinWidth="@MinWidth" Outlined="@Outlined" Square="@Square" Style="@Style" Tag="@Tag" UserAttributes="@UserAttributes" Width="@Width">
-        <MudPaper Class="mud-editor-toolbar d-flex justify-start flex-grow-1 flex-wrap gap-2 px-1 py-1">
-            @foreach (var option in _toolBarOption.Options!) {
+        <MudPaper Class="mud-editor-toolbar d-flex justify-start flex-wrap gap-2 px-1 py-1">
+            @foreach (var option in _toolBarOption.Options) {
                 <CascadingValue Value="@this">
                     <CascadingValue Value="@option">
                         <DynamicComponent Type="@option.Type.ComponentType"/>

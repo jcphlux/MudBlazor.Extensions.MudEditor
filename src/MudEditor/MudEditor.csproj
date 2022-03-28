@@ -13,7 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="MudBlazor" Version="6.0.7" />
+	  <PackageReference Include="MudBlazor" Version="6.0.8" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('ClientApp\node_modules') ">
@@ -41,6 +41,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Remove="Components\ToolBarComponents\ToolBarBtnList.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="ClientApp\package-lock.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="ClientApp\package.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="ClientApp\tsconfig.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 </Project>

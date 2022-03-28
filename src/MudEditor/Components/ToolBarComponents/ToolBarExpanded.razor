@@ -2,7 +2,7 @@
 @namespace MudBlazor.Extensions.ToolBarComponents
 
 <MudButtonGroup Variant="Variant.Outlined">
-    @foreach (var option in Option.Options!) {
+    @foreach (var option in Option.Options) {
         <CascadingValue Value="@Editor">
             <CascadingValue Value="@option">
                 <DynamicComponent Type="@option.Type.ComponentType"/>

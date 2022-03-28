@@ -2,15 +2,15 @@
 
 @namespace MudBlazor.Extensions.ToolBarComponents
 <div class="mud-editor-picker d-flex">
-    <MudColorPicker @ref="_picker" TextChanged="OnValueChanged" Text="@Value.StrValue" />
-    <MudIconButton Class="pa-0" Icon="@Option.Icon" Color="@Color" Size="Size.Small" OnClick="@Open" Style="@_fontStyle" Title="@Option.Label"></MudIconButton>
+    <MudColorPicker @ref="_picker" TextChanged="OnValueChanged" Text="@Value?.ToString()" />
+    <MudIconButton Color="@Color" Icon="@Option.Icon" OnClick="@Open" Size="Size.Small" Style="@_style" Title="@Option.Label"></MudIconButton>
 </div>
 
 @code {
     private MudColorPicker? _picker;
-    private string? _fontStyle;
+    private string? _style;
 
-    protected override void OnValueChanged() => _fontStyle = string.IsNullOrEmpty(Value.StrValue) ? null : $"color:{Value.StrValue}";
+    protected override void OnValueChanged() => _style = Value != null ? null : $"color:{Value}";
 
     private void Open() {
         _picker!.Open();

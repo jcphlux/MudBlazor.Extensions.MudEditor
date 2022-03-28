@@ -1,6 +1,9 @@
 ﻿@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
 
+
+@*<MudIconButton OnClick="@OnClick" Color="@(Active? ActiveColor: Color)" Icon="@Option.Icon" Size="Size.Small" Title="@Option.Label" ></MudIconButton>*@
+@*
 <MudButtonGroup Variant="Variant.Outlined">
     @foreach (var option in Option.Options!) {
         <CascadingValue Value="@Editor">
@@ -9,9 +12,8 @@
             </CascadingValue>
         </CascadingValue>
     }
-
-    @*<MudIconButton Class="pa-0" Color="@(Active ? _activeColor : _color)" Icon="@_selectedOptions.Icon" OnClick="@(ToggleValue)" Size="Size.Small" Title="@_selectedOptions.Label"></MudIconButton>*@
 </MudButtonGroup>
+*@
 
 @code {
     //private ToolBarOption _selectedOptions = null!;
