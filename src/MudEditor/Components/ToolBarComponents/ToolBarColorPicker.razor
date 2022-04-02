@@ -3,7 +3,7 @@
 @namespace MudBlazor.Extensions.ToolBarComponents
 <div class="mud-editor-picker d-flex">
     <MudColorPicker @ref="_picker" TextChanged="OnValueChanged" Text="@Value?.ToString()" />
-    <MudIconButton Color="@Color" Icon="@Option.Icon" OnClick="@Open" Size="Size.Small" Style="@_style" Title="@Option.Label"></MudIconButton>
+    <MudIconButton Color="@Editor.ToolBarColor" Icon="@Option.Icon" OnClick="@Open" Size="Size.Small" Style="@_style" Title="@Option.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
 </div>
 
 @code {

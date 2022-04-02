@@ -12,6 +12,8 @@ public class ToolBarGroupType : Enumeration
     internal static readonly ToolBarGroupType Group = new(typeof(ToolBarBtnGroup));
     internal static readonly ToolBarGroupType Btn = new(typeof(ToolBarBtn));
     internal static readonly ToolBarGroupType ColorPicker = new(typeof(ToolBarColorPicker));
+    internal static readonly ToolBarGroupType UrlDialog = new(typeof(ToolBarUrl));
+    internal static readonly ToolBarGroupType File = new(typeof(ToolBarUrl));
     internal static readonly ToolBarGroupType ToolBarBase = new(value: 7);
 
     private ToolBarGroupType(Type componentType = null!, int? value = null, [CallerMemberName] string name = null!) :

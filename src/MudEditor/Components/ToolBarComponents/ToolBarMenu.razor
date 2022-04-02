@@ -4,12 +4,12 @@
 
 <MudMenu Dense="true" Class="@Classname" PopoverClass="@Classname" AnchorOrigin="Origin.BottomLeft">
     <ActivatorContent>
-        <MudIconButton Variant="Variant.Outlined" Color="@(Active? ActiveColor: Color)" Icon="@_selectedOption.Icon" Size="Size.Small" Title="@_selectedOption.Label" ></MudIconButton>
+        <MudIconButton Variant="Variant.Outlined" Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@_selectedOption.Icon" Size="Size.Small" Title="@_selectedOption.Label" ></MudIconButton>
     </ActivatorContent>
     <ChildContent>
     @foreach (var option in Option.Options) {
         <MudMenuItem  OnClick="@(() => ItemSelected(option))">
-            <MudIcon Icon="@option.Icon" Color="@Editor.ToolBarColor" Size="Size.Small"></MudIcon>
+            <MudIcon Icon="@option.Icon" Color="@(_selectedOption.AttribValue==option.AttribValue? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Size="Size.Small"></MudIcon>
         </MudMenuItem>
     }
     </ChildContent>

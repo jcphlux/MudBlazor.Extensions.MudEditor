@@ -21,9 +21,10 @@ class MudEditorBase {
 }
 
 var link = document.createElement("link");
-link.rel = "stylesheet";
 link.href = "_content/MudEditor/MudEditor.min.css";
-document.head.appendChild(link);
+link.rel = "stylesheet";
+
+document.querySelector('link[rel="stylesheet"][href="_content/MudBlazor/MudBlazor.min.css"]').after(link);
 
 
 window["MudEditor"] = new MudEditorBase();

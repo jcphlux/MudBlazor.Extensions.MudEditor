@@ -1,26 +1,18 @@
 ﻿@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
-
-
-@*<MudIconButton OnClick="@OnClick" Color="@(Active? ActiveColor: Color)" Icon="@Option.Icon" Size="Size.Small" Title="@Option.Label" ></MudIconButton>*@
-@*
-<MudButtonGroup Variant="Variant.Outlined">
-    @foreach (var option in Option.Options!) {
-        <CascadingValue Value="@Editor">
-            <CascadingValue Value="@option">
-                <DynamicComponent Type="@option.Type.ComponentType"/>
-            </CascadingValue>
-        </CascadingValue>
-    }
-</MudButtonGroup>
-*@
-
+<MudIconButton Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@_selectedOption.Icon" Size="Size.Small" Title="@_selectedOption.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
 @code {
-    //private ToolBarOption _selectedOptions = null!;
+    private ToolBarOption _selectedOption = null!;
+
+    protected override void OnValueChanged() {
+        _selectedOption = Value == null ? 
+            Option.Options.FirstOrDefault(o => o.AttribValue == null, Option.Options[0]) : 
+            Option.Options.First(o=> Value!.Equals(o.AttribValue));
+    }
 
     //protected override void OnParametersSet() {
     //    _selectedOptions = Option.Options!.First();
-    //}
+    //}OnClick="@OnClick"
 
     //private void ToggleValue() {
     //    _selectedOptions = Option.Options!.SkipWhile(option => !option.Equals(_selectedOptions)).Skip(1).DefaultIfEmpty(Option.Options!.First()).FirstOrDefault()!;

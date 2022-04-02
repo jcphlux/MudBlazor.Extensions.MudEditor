@@ -1,9 +1,9 @@
 ﻿@namespace MudBlazor.Extensions
 @inherits MudComponentBase
-@*<MudPopoverProvider></MudPopoverProvider>*@
+
 <div class="@Classname">
     <MudPaper Elevation="@Elevation" Height="@Height" MaxHeight="@MaxHeight" MaxWidth="@MaxWidth" MinHeight="@MinHeight" MinWidth="@MinWidth" Outlined="@Outlined" Square="@Square" Style="@Style" Tag="@Tag" UserAttributes="@UserAttributes" Width="@Width">
-        <MudPaper Class="mud-editor-toolbar d-flex justify-start flex-wrap gap-2 px-1 py-1">
+        <MudPaper Class="@ToolBarClassname" Elevation="@ToolBarElevation" Outlined="@ToolBarOutlined" Square="@Square">
             @foreach (var option in _toolBarOption.Options) {
                 <CascadingValue Value="@this">
                     <CascadingValue Value="@option">
@@ -13,8 +13,7 @@
             }
         </MudPaper>
 
-        <div id="@EditorContainerId" @ref="@_quillElement" class="overflow-y-scroll d-flex mud-editor-container">
-            @EditorContent
+        <div id="@EditorContainerId" @ref="_quillElement" class="overflow-y-scroll d-flex mud-editor-container">
         </div>
     </MudPaper>
 </div>

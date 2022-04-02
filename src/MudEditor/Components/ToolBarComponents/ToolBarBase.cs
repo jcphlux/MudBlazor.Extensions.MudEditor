@@ -5,8 +5,8 @@ namespace MudBlazor.Extensions.ToolBarComponents;
 public class ToolBarBase : ComponentBase, IDisposable
 {
     protected bool Active;
-    protected Color ActiveColor = Color.Primary;
-    protected Color Color = Color.Default;
+    //protected Color ActiveColor = Color.Primary;
+    //protected Color Color = Color.Default;
 
     [CascadingParameter]
     public MudEditor Editor { get; set; } = null!;
@@ -26,8 +26,8 @@ public class ToolBarBase : ComponentBase, IDisposable
 
     protected override void OnParametersSet()
     {
-        Color = Editor.ToolBarColor;
-        ActiveColor = Editor.ToolBarActiveColor;
+        //Color = Editor.ToolBarColor;
+        //ActiveColor = Editor.ToolBarActiveColor;
         if (!string.IsNullOrEmpty(Option.Attrib) || Option.AllowNull)
             Editor.OnFormatChange += OnFormatChange;
 

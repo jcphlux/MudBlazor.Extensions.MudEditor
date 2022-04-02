@@ -2,7 +2,7 @@
 @inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
 <div class="flex-none">
-    <MudSelect T="object" Value="@Value" Variant="Variant.Outlined" ValueChanged="ValueChanged" AdornmentColor="@Color" Dense="true" Margin="Margin.Dense" Class="@Classname" PopoverClass="@Classname">
+    <MudSelect AdornmentColor="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Class="@Classname" Dense="true" Margin="Margin.Dense" PopoverClass="@Classname" T="object" Value="@Value" ValueChanged="ValueChanged" Variant="@Editor.ToolBarVariant">
         @foreach (var option in Option.Options) {
             <MudSelectItem Value="@option.AttribValue"></MudSelectItem>
         }
@@ -17,6 +17,6 @@
         .Build();
 
 
-    protected async void ValueChanged(object value) => await Editor.SetFormat(Option.Attrib, value.Equals(Value)? null: value);
+    private async void ValueChanged(object value) => await Editor.SetFormat(Option.Attrib, value.Equals(Value)? null: value);
 
 }

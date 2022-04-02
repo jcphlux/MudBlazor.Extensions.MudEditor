@@ -1,7 +1,7 @@
 ﻿@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
 
-<MudButtonGroup Variant="Variant.Outlined" Class="pa-0 ma-0" Size="Size.Small">
+<MudButtonGroup Class="pa-0 ma-0" Size="Size.Small" Variant="@Editor.ToolBarVariant">
     @foreach (var option in Option.Options)
     {
         <CascadingValue Value="@Editor">
