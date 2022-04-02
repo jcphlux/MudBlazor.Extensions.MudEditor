@@ -1,6 +1,6 @@
 ﻿@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
-<MudIconButton Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@_selectedOption.Icon" Size="Size.Small" Title="@_selectedOption.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
+<MudIconButton Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@_selectedOption.Icon" OnClick="@ToggleValue" Size="Size.Small" Title="@_selectedOption.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
 @code {
     private ToolBarOption _selectedOption = null!;
 
@@ -10,12 +10,8 @@
             Option.Options.First(o=> Value!.Equals(o.AttribValue));
     }
 
-    //protected override void OnParametersSet() {
-    //    _selectedOptions = Option.Options!.First();
-    //}OnClick="@OnClick"
-
-    //private void ToggleValue() {
-    //    _selectedOptions = Option.Options!.SkipWhile(option => !option.Equals(_selectedOptions)).Skip(1).DefaultIfEmpty(Option.Options!.First()).FirstOrDefault()!;
-    //}
-
+    private async void ToggleValue() {
+        var option = Option.Options.First(o=> Value != o.AttribValue);
+        await Editor.SetFormat(option.Attrib, option.AttribValue);
+    }
 }

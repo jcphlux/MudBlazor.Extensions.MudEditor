@@ -86,17 +86,17 @@ public class ToolBarOption : Enumeration
     public static readonly ToolBarOption AlignmentExpanded =
         new(Expanded, "align", options: new[] {AlignLeft, AlignCenter, AlignRight, AlignJustify});
 
-    internal static readonly ToolBarOption
-        Ltr = new(Btn, "direction", "Left to Right", Icons.Filled.FormatTextdirectionLToR);
+    //internal static readonly ToolBarOption
+    //    Ltr = new(Btn, "direction", "Left to Right", Icons.Filled.FormatTextdirectionLToR);
 
-    internal static readonly ToolBarOption
-        Rtl = new(Btn, "direction", "Right to Left", Icons.Filled.FormatTextdirectionRToL, "rtl");
+    //internal static readonly ToolBarOption
+    //    Rtl = new(Btn, "direction", "Right to Left", Icons.Filled.FormatTextdirectionRToL, "rtl");
 
-    public static readonly ToolBarOption LtrToggle = new(Toggle, "direction", options: new[] {Ltr, Rtl},
-        allowNull: true);
+    //public static readonly ToolBarOption LtrToggle = new(Toggle, "direction", options: new[] {Ltr, Rtl},
+    //    allowNull: true);
 
-    public static readonly ToolBarOption LrtExpanded = new(Expanded, "direction", options: new[] {Ltr, Rtl},
-        allowNull: true);
+    //public static readonly ToolBarOption LrtExpanded = new(Expanded, "direction", options: new[] {Ltr, Rtl},
+    //    allowNull: true);
 
     public static readonly ToolBarOption Link = new(Btn, "link", "Embed Link", Icons.Filled.InsertLink);
     public static readonly ToolBarOption Image = new(Btn, "image", "Embed Image", Icons.Filled.Image);
@@ -123,7 +123,7 @@ public class ToolBarOption : Enumeration
                 Quote,
                 Code, ListGroup, IndentGroup,
                 AlignmentMenu,
-                //, LtrToggle,
+                //LtrToggle,
                 MediaGroup,
                 MathGroup, FormatClear
             });
