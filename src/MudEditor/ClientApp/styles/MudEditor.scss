@@ -28,6 +28,7 @@ $menu: #{$toolbar}-menu;
 
     .mud-editor-container {
         min-height: 42px;
+        height: calc(100% - 48px);
 
         .ql-editor {
             @import './highlight.scss';
