@@ -81,7 +81,7 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     public string ToolBarStyle { get; set; } = null!;
 
     [Parameter]
-    public Color ToolBarActiveColor { get; set; } = Color.Success;
+    public Color ToolBarActiveColor { get; set; } = Color.Primary;
 
     [Parameter]
     public Color ToolBarColor { get; set; } = Color.Inherit;
@@ -123,7 +123,7 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     private async Task UpdateOn() => await _quillEditor!.InvokeVoidAsync("updateOn");
 
     [JSInvokable]
-    internal void QuillGetFormat(Dictionary<string, JsonValue> jsonFormats)
+    public void QuillGetFormat(Dictionary<string, JsonValue> jsonFormats)
     {
         var formats = new Dictionary<string, object>();
 
