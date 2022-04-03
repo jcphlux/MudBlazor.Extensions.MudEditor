@@ -3,11 +3,11 @@ $toolbar: #{$editor}-toolbar;
 $list: #{$toolbar}-list;
 $menu: #{$toolbar}-menu;
 
-.#{$editor} .mud-editor-wrapper {
+.#{$editor} .#{$editor}-wrapper {
     @import 'quill-css';
-    height:100%;
+    height: 100%;
 
-    .mud-editor-popover {
+    .#{$editor}-popover {
         background-color: red;
     }
 
@@ -16,18 +16,22 @@ $menu: #{$toolbar}-menu;
             max-width: 150px;
         }
 
-        .mud-button-root {
-            padding: 8px 10.35px 10px;
+        .#{$menu} .mud-button-root, .mud-button-root {
+            padding: 9px;
         }
 
-        .mud-editor-picker {
+        .mud-button-group-root .mud-button-root {
+            padding: 8px 7.625px 7px;
+        }
+
+        .#{$editor}-picker {
             .mud-picker * {
                 display: none;
             }
         }
     }
 
-    .mud-editor-container {
+    .#{$editor}-container {
         .ql-editor {
             @import './highlight.scss';
             height: auto;

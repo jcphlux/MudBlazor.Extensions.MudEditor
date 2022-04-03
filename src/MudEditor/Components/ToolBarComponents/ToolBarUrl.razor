@@ -1,5 +1,5 @@
 ﻿@inherits ToolBarBase
-@inject IDialogService DialogService
+@inject IDialogService _dialogService
 @namespace MudBlazor.Extensions.ToolBarComponents
 <MudIconButton Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@Action.Icon" OnClick="Open" Size="Size.Small" Title="@Action.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
 
@@ -16,17 +16,13 @@
             {"Update", !string.IsNullOrEmpty(url)}
         };
 
-        //await Task.Delay(100);
-        var dialog = DialogService.Show<ToolBarUrlDialog>(Action.Label, parameters, _dialogOptions);
+        var dialog = _dialogService.Show<ToolBarUrlDialog>(Action.Label, parameters, _dialogOptions);
         var result = await dialog.Result;
 
         if (result.Cancelled) return;
 
         url = result.Data.ToString();
         await Editor.SetAttrib(Action.Command, Action.Attrib, url);
-
-
-        //await Editor.ShowUrlDialog(Action, (Value as string) ?? "");
     }
 
     protected override async void OnValueChanged() {
