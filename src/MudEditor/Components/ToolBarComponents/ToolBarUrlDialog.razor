@@ -1,0 +1,37 @@
+﻿@namespace MudBlazor.Extensions.ToolBarComponents
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField AdornmentIcon="@Icon" Adornment="Adornment.Start" @bind-Value="Url" Label="@($"{Label} Url")" Variant="@Variant"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        @if(Update){
+            <MudButton Color="Color.Warning" OnClick="Remove">Remove</MudButton>
+        }
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter] public string Url { get; set; } = null!;
+
+    [Parameter] public string Icon { get; set; }= null!;
+
+    [Parameter] public string Label { get; set; }= null!;
+
+    [Parameter] public Variant Variant { get; set; }
+
+    [Parameter] public bool Update { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(Url));
+
+    void Cancel() => MudDialog.Cancel();
+
+    private void Remove() {
+        Url = null!;
+        Submit();
+    }
+}

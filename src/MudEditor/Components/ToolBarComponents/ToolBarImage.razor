@@ -1,9 +1,17 @@
-﻿@inherits ToolBarBase
+﻿@using Microsoft.AspNetCore.Components.Forms
+@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
-
-<h3>ToolBarUrl</h3>
-
+<InputFile accept=".jpg, .jpeg, .png" hidden id="fileInput" OnChange="UploadFiles"/>
+<MudIconButton Color="@Editor.ToolBarColor" for="fileInput" HtmlTag="label" Icon="@Action.Icon" Size="Size.Small" Title="@Action.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
 
 @code {
+    private async void UploadFiles(InputFileChangeEventArgs e) {
+        var file = e.GetMultipleFiles()[0];
 
+        var bytes = await new StreamContent(file.OpenReadStream(file.Size)).ReadAsByteArrayAsync();
+        var base64 = Convert.ToBase64String(bytes);
+        var image = $@"data:{file.ContentType};base64,{base64}";
+
+        await Editor.SetAttrib(Action.Command, Action.Attrib, image);
+    }
 }

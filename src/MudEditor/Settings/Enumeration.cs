@@ -6,7 +6,7 @@ public abstract class Enumeration : IComparable
 {
     protected Enumeration(int? value, string name)
     {
-        Value = value ?? GetAll<ToolBarOption>().Count();
+        Value = value ?? GetAll<Enumeration>().Count();
         Name = name;
     }
 

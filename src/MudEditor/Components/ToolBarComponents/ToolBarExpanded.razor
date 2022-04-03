@@ -1,13 +1,9 @@
-﻿@inherits ToolBarBase
+﻿@inherits ToolBarMenu
 @namespace MudBlazor.Extensions.ToolBarComponents
 
-<MudButtonGroup Variant="@Editor.ToolBarVariant">
-    @foreach (var option in Option.Options) {
-        <CascadingValue Value="@Editor">
-            <CascadingValue Value="@option">
-                <DynamicComponent Type="@option.Type.ComponentType"/>
-            </CascadingValue>
-        </CascadingValue>
+<MudButtonGroup Class="pa-0 ma-0" Size="Size.Small" Variant="@Editor.ToolBarVariant">
+    @foreach (var action in Action.Actions) {
+        <MudIconButton Color="@(_selectedAction.AttribValue==action.AttribValue? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@action.Icon" OnClick="@(() => ItemSelected(action))" Size="Size.Small" Title="@action.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
     }
 </MudButtonGroup>
 

@@ -2,16 +2,18 @@
 @inherits MudComponentBase
 
 <MudPaper Class="@Classname" Elevation="@Elevation" Height="@Height" MaxHeight="@MaxHeight" MaxWidth="@MaxWidth" MinHeight="@MinHeight" MinWidth="@MinWidth" Outlined="@Outlined" Square="@Square" Style="@Style" Tag="@Tag" UserAttributes="@UserAttributes" Width="@Width">
+<div class="mud-editor-wrapper d-flex flex-column" onfocusout="@(() => UpdateOff())" onfocusin="@(() =>UpdateOn())">
     <MudPaper Class="@ToolBarClassname" Elevation="@ToolBarElevation" Outlined="@ToolBarOutlined" Square="@Square">
-        @foreach (var option in _toolBarOption.Options) {
+        @foreach (var action in _toolBarOption.Actions) {
             <CascadingValue Value="@this">
-                <CascadingValue Value="@option">
-                    <DynamicComponent Type="@option.Type.ComponentType"/>
+                <CascadingValue Value="@action">
+                    <DynamicComponent Type="@action.Type"/>
                 </CascadingValue>
             </CascadingValue>
         }
     </MudPaper>
 
-    <div id="@EditorContainerId" @ref="_quillElement" class="overflow-y-scroll d-flex mud-editor-container">
+    <div id="@EditorContainerId" @ref="_quillElement" class="overflow-y-scroll mud-editor-container">
     </div>
+</div>
 </MudPaper>

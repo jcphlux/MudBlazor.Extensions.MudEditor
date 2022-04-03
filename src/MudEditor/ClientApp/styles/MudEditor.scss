@@ -3,8 +3,9 @@ $toolbar: #{$editor}-toolbar;
 $list: #{$toolbar}-list;
 $menu: #{$toolbar}-menu;
 
-.#{$editor} {
+.#{$editor} .mud-editor-wrapper {
     @import 'quill-css';
+    height:100%;
 
     .mud-editor-popover {
         background-color: red;
@@ -12,7 +13,7 @@ $menu: #{$toolbar}-menu;
 
     .#{$toolbar} {
         .#{$list} {
-            max-width: 130px;
+            max-width: 150px;
         }
 
         .mud-button-root {
@@ -27,13 +28,10 @@ $menu: #{$toolbar}-menu;
     }
 
     .mud-editor-container {
-        min-height: 42px;
-        height: calc(100% - 48px);
-
         .ql-editor {
             @import './highlight.scss';
-            flex-grow: 1;
-            overflow: visible;
+            height: auto;
+            min-height: 100%;
         }
     }
 }

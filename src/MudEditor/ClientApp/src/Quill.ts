@@ -1,15 +1,15 @@
 ﻿import Quill from "quill/core";
 
-import { AlignClass, AlignStyle } from "quill/formats/align";
+import { AlignAttribute, AlignClass, AlignStyle } from "quill/formats/align";
 import { DirectionAttribute, DirectionClass, DirectionStyle } from "quill/formats/direction";
-import { IndentClass as Indent } from "quill/formats/indent";
+import { IndentClass } from "quill/formats/indent";
 
 import Blockquote from "quill/formats/blockquote";
 import Header from "quill/formats/header";
 import List, { ListItem } from "quill/formats/list";
 
 import { BackgroundClass, BackgroundStyle } from "quill/formats/background";
-import { ColorClass, ColorStyle } from "quill/formats/color";
+import { ColorAttributor, ColorClass, ColorStyle } from "quill/formats/color";
 import { FontClass, FontStyle } from "quill/formats/font";
 import { SizeClass, SizeStyle } from "quill/formats/size";
 
@@ -23,7 +23,7 @@ import Underline from "quill/formats/underline";
 import Image from "quill/formats/image";
 import Video from "quill/formats/video";
 
-import CodeBlock, { Code as InlineCode } from "quill/formats/code";
+import CodeBlock, { Code } from "quill/formats/code";
 
 import Formula from "quill/modules/formula";
 import Syntax from "quill/modules/syntax";
@@ -32,6 +32,8 @@ import Syntax from "quill/modules/syntax";
 
 Quill.register({
     "attributors/attribute/direction": DirectionAttribute,
+    "attributors/attribute/align": AlignAttribute,
+    "attributors/attribute/color": ColorAttributor,
 
     "attributors/class/align": AlignClass,
     "attributors/class/background": BackgroundClass,
@@ -52,7 +54,7 @@ Quill.register({
 Quill.register({
     "formats/align": AlignClass,
     "formats/direction": DirectionClass,
-    "formats/indent": Indent,
+    "formats/indent": IndentClass,
 
     "formats/background": BackgroundStyle,
     "formats/color": ColorStyle,
@@ -65,7 +67,7 @@ Quill.register({
     "formats/list": List,
 
     "formats/bold": Bold,
-    "formats/code": InlineCode,
+    "formats/code": Code,
     "formats/italic": Italic,
     "formats/link": Link,
     "formats/script": Script,

@@ -1,6 +1,6 @@
 ﻿namespace MudBlazor.Extensions.CustomIcons;
 
-public static class MudEditorIcons
+internal static class MudEditorIcons
 {
-    public static MudEditorCustomIcons Icons { get; } = new();
+    internal static MudEditorCustomIcons Icons { get; } = new();
 }

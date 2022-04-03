@@ -2,35 +2,38 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Utilities;
-using static MudBlazor.Extensions.ToolBarOption;
+using static MudBlazor.Extensions.ToolBarAction;
 
 namespace MudBlazor.Extensions;
 
 public partial class MudEditor : MudComponentBase, IAsyncDisposable
 {
+    internal Dictionary<string, object> CurrentFormats = new();
     private DotNetObjectReference<MudEditor>? _dotNetObjectReference;
 
     private IJSObjectReference? _quillEditor;
 
     private ElementReference _quillElement;
 
-    private ToolBarOption _toolBarOption = null!;
+    private ToolBarAction _toolBarOption = null!;
 
     private string Classname => new CssBuilder("mud-editor").AddClass(Class).Build();
 
-    private string ToolBarClassname => new CssBuilder("mud-editor-toolbar d-flex justify-start flex-wrap gap-2 px-1 py-1").AddClass(ToolBarClass).Build();
+    private string ToolBarClassname =>
+        new CssBuilder("mud-editor-toolbar d-flex justify-start flex-wrap gap-2 px-1 py-1").AddClass(ToolBarClass)
+            .Build();
 
     [Inject]
     private IJSRuntime? JsRuntime { get; set; }
 
     [Parameter]
-    public ToolBarGroup[] ToolBarOptions { get; set; } = null!;
+    public ToolBarGroup[]? ToolBarOptions { get; set; }
 
     [Parameter]
     public List<string> Fonts { get; set; } = null!;
 
     [Parameter]
-    public string EditorContainerId { get; set; } = null!;
+    public string EditorContainerId { get; set; } = $"mudEditor{Guid.NewGuid():N}";
 
     [Parameter]
     public bool ReadOnly { get; set; }
@@ -78,13 +81,10 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     public string ToolBarStyle { get; set; } = null!;
 
     [Parameter]
-    public Color ToolBarActiveColor { get; set; } = Color.Primary;
+    public Color ToolBarActiveColor { get; set; } = Color.Success;
 
     [Parameter]
     public Color ToolBarColor { get; set; } = Color.Inherit;
-
-    //[Parameter]
-    //public Color ToolBarBackgroundColor { get; set; } = Color.Surface;
 
     [Parameter]
     public Variant ToolBarVariant { get; set; } = Variant.Outlined;
@@ -97,14 +97,14 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
                 _dotNetObjectReference,
                 _quillElement,
                 Placeholder);
+
+        GC.SuppressFinalize(this);
     }
 
     internal event Action<Dictionary<string, object>> OnFormatChange = null!;
 
-    protected override void OnParametersSet()
-    {
+    protected override void OnParametersSet() =>
         _toolBarOption = ToolBarOptions == null ? Full : CustomToolBarOption(ToolBarOptions);
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -118,8 +118,12 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
             Placeholder);
     }
 
+    private async Task UpdateOff() => await _quillEditor!.InvokeVoidAsync("updateOff");
+
+    private async Task UpdateOn() => await _quillEditor!.InvokeVoidAsync("updateOn");
+
     [JSInvokable]
-    public void QuillGetFormat(Dictionary<string, JsonValue> jsonFormats)
+    internal void QuillGetFormat(Dictionary<string, JsonValue> jsonFormats)
     {
         var formats = new Dictionary<string, object>();
 
@@ -131,9 +135,19 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
             else if (value.TryGetValue(out bool? boolValue))
                 formats.Add(key, boolValue);
 
+        CurrentFormats = formats;
         OnFormatChange(formats);
     }
 
-    internal async Task SetFormat(string attrib, object? value) =>
-        await _quillEditor!.InvokeVoidAsync("format", attrib, value);
+    internal async Task SetAttrib(string command, string attrib, object? value)
+    {
+        try
+        {
+            await _quillEditor!.InvokeVoidAsync(command, attrib, value);
+        }
+        catch
+        {
+            // ignored This is to suppress an error coming from Quill JS Lib.
+        }
+    }
 }

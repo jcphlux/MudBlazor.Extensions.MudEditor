@@ -2,17 +2,12 @@
 @inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
 
-<MudMenu Dense="true" Class="@Classname" PopoverClass="@Classname" AnchorOrigin="Origin.BottomLeft">
-    <ActivatorContent>
-        <MudIconButton Variant="Variant.Outlined" Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@_selectedOption.Icon" Size="Size.Small" Title="@_selectedOption.Label" ></MudIconButton>
-    </ActivatorContent>
-    <ChildContent>
-    @foreach (var option in Option.Options) {
-        <MudMenuItem  OnClick="@(() => ItemSelected(option))">
-            <MudIcon Icon="@option.Icon" Color="@(_selectedOption.AttribValue==option.AttribValue? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Size="Size.Small"></MudIcon>
+<MudMenu AnchorOrigin="Origin.BottomLeft" Class="@Classname" Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Dense="true" Icon="@_selectedAction.Icon" PopoverClass="@Classname" Size="Size.Small" Variant="@Editor.ToolBarVariant">
+    @foreach (var action in Action.Actions) {
+        <MudMenuItem  OnClick="@(() => ItemSelected(action))">
+            <MudIcon Color="@(_selectedAction.AttribValue==action.AttribValue? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@action.Icon" Size="Size.Small" Title="@action.Label"></MudIcon>
         </MudMenuItem>
     }
-    </ChildContent>
 </MudMenu>
 
 @code {
@@ -22,15 +17,15 @@
         .AddClass("ma-0")
         .Build();
 
-    private ToolBarOption _selectedOption = null!;
+    protected ToolBarAction _selectedAction = null!;
 
-    private async void ItemSelected(ToolBarOption option) {
-        await Editor.SetFormat(Option.Attrib, Value == option.AttribValue ? null : option.AttribValue);
+    protected async void ItemSelected(ToolBarAction action) {
+        await Editor.SetAttrib(action.Command, action.Attrib, Value == action.AttribValue ? null : action.AttribValue);
     }
 
     protected override void OnValueChanged() {
-        _selectedOption = Value == null ? 
-            Option.Options.FirstOrDefault(o => o.AttribValue == null, Option.Options[0]) : 
-            Option.Options.First(o=> Value!.Equals(o.AttribValue));
+        _selectedAction = Value == null ? 
+            Action.Actions.FirstOrDefault(o => o.AttribValue == null, Action.Actions[0]) : 
+            Action.Actions.First(o=> Value!.Equals(o.AttribValue));
     }
 }

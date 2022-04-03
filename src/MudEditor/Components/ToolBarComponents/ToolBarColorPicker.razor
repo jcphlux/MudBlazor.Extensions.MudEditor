@@ -3,7 +3,7 @@
 @namespace MudBlazor.Extensions.ToolBarComponents
 <div class="mud-editor-picker d-flex">
     <MudColorPicker @ref="_picker" Text="@_colorValue" TextChanged="TextChanged" />
-    <MudIconButton Color="@Editor.ToolBarColor" Icon="@Option.Icon" OnClick="@Open" Size="Size.Small" Style="@($"color: {_colorValue};")" Title="@Option.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
+    <MudIconButton Color="@Editor.ToolBarColor" Icon="@Action.Icon" OnClick="@Open" Size="Size.Small" Style="@($"color: {_colorValue};")" Title="@Action.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
 </div>
 
 @code {
@@ -12,7 +12,7 @@
 
     private async void TextChanged(string value) {
         if(Value as string != value)
-            await Editor.SetFormat(Option.Attrib, value);
+            await Editor.SetAttrib(Action.Command, Action.Attrib, value);
     }
 
     protected override void OnValueChanged() => _colorValue = (Value as string)!;

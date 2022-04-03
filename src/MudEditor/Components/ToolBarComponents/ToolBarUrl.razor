@@ -1,23 +1,36 @@
 ﻿@inherits ToolBarBase
+@inject IDialogService DialogService
 @namespace MudBlazor.Extensions.ToolBarComponents
-<MudIconButton Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@Option.Icon" OnClick="ToggleDialog" Size="Size.Small" Title="@Option.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
-
-<MudDialog @bind-IsVisible="_visible" Options="_dialogOptions">
-    <TitleContent>
-
-    </TitleContent>
-    <DialogContent>
-        
-    </DialogContent>
-    <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ToggleDialog" Class="px-10">Close</MudButton>
-    </DialogActions>
-</MudDialog>
-
+<MudIconButton Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@Action.Icon" OnClick="Open" Size="Size.Small" Title="@Action.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
 
 @code {
-    private bool _visible;
-    private DialogOptions _dialogOptions = new() { FullWidth = true };
+    private readonly DialogOptions _dialogOptions = new() { NoHeader = true };
 
-    void ToggleDialog() => _visible = !_visible;
+    private async Task Open() {
+        var url = (Value as string) ?? "";
+        var parameters = new DialogParameters {
+            {"Url", url},
+            {"Icon", Action.Icon},
+            {"Label", Action.Label},
+            {"Variant", Editor.ToolBarVariant},
+            {"Update", !string.IsNullOrEmpty(url)}
+        };
+
+        //await Task.Delay(100);
+        var dialog = DialogService.Show<ToolBarUrlDialog>(Action.Label, parameters, _dialogOptions);
+        var result = await dialog.Result;
+
+        if (result.Cancelled) return;
+
+        url = result.Data.ToString();
+        await Editor.SetAttrib(Action.Command, Action.Attrib, url);
+
+
+        //await Editor.ShowUrlDialog(Action, (Value as string) ?? "");
+    }
+
+    protected override async void OnValueChanged() {
+        if (Active)
+            await Open();
+    }
 }

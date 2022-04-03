@@ -13,11 +13,11 @@ export class MudEditor {
 
     private editorChanged = (eventName: any, ...args: any[]) => {
         const formats = this.quill.getFormat();
-        console.log(formats);
+        console.log(eventName, args);
         this.dotnetHelper.invokeMethodAsync("QuillGetFormat", formats);
     }
 
-    stuff = () => {
+    dispose = () => {
         this.quill.off("editor-change", this.editorChanged);
     }
 
@@ -26,11 +26,15 @@ export class MudEditor {
         this.quill.format(attrib, value);
     }
 
-    resetFormat = () => {
+    removeFormat = () => {
         this.quill.removeFormat();
     }
 
-    focus = () => {
-        this.quill.focus();
+    updateOn = () => {
+        this.quill.on("editor-change", this.editorChanged);
+    }
+
+    updateOff = () => {
+        this.quill.off("editor-change", this.editorChanged);
     }
 }

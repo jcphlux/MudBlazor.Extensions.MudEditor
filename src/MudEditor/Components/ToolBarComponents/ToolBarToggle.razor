@@ -2,16 +2,24 @@
 @namespace MudBlazor.Extensions.ToolBarComponents
 <MudIconButton Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@_selectedOption.Icon" OnClick="@ToggleValue" Size="Size.Small" Title="@_selectedOption.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
 @code {
-    private ToolBarOption _selectedOption = null!;
+    private ToolBarAction _selectedOption = null!;
 
     protected override void OnValueChanged() {
         _selectedOption = Value == null ? 
-            Option.Options.FirstOrDefault(o => o.AttribValue == null, Option.Options[0]) : 
-            Option.Options.First(o=> Value!.Equals(o.AttribValue));
+            Action.Actions.FirstOrDefault(o => o.AttribValue == null, Action.Actions[0]) : 
+            Action.Actions.First(o=> Value!.Equals(o.AttribValue));
     }
 
     private async void ToggleValue() {
-        var option = Option.Options.First(o=> Value != o.AttribValue);
-        await Editor.SetFormat(option.Attrib, option.AttribValue);
+        var action = Action.Actions.First(o=> Value != o.AttribValue);
+
+        if (action.Attrib.Equals("direction")) {
+            if(action.AttribValue == null && Editor.CurrentFormats.ContainsKey("align") && Editor.CurrentFormats["align"].Equals("right"))
+                await Editor.SetAttrib("format", "align", null);
+            if(action.AttribValue != null && action.AttribValue.Equals("rtl") && !Editor.CurrentFormats.ContainsKey("align"))
+                await Editor.SetAttrib("format", "align", "right");
+        }
+
+        await Editor.SetAttrib(action.Command, action.Attrib, action.AttribValue);
     }
 }
