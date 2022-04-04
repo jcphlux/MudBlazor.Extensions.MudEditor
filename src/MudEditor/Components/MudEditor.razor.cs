@@ -9,6 +9,7 @@ namespace MudBlazor.Extensions;
 public partial class MudEditor : MudComponentBase, IAsyncDisposable
 {
     internal Dictionary<string, object> CurrentFormats = new();
+    internal SelectionRange CurrentSelection = null!;
     private DotNetObjectReference<MudEditor>? _dotNetObjectReference;
 
     private IJSObjectReference? _quillEditor;
@@ -123,11 +124,12 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     private async Task UpdateOn() => await _quillEditor!.InvokeVoidAsync("updateOn");
 
     [JSInvokable]
-    public void QuillGetFormat(Dictionary<string, JsonValue> jsonFormats)
+    public void SetSelectionInfo(SelectionInfo selectionInfo)
     {
+        CurrentSelection = selectionInfo.Range;
         var formats = new Dictionary<string, object>();
 
-        foreach (var (key, value) in jsonFormats)
+        foreach (var (key, value) in selectionInfo.Formats)
             if (value.TryGetValue(out string? strValue))
                 formats.Add(key, strValue);
             else if (value.TryGetValue(out int? intValue))
@@ -135,19 +137,38 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
             else if (value.TryGetValue(out bool? boolValue))
                 formats.Add(key, boolValue);
 
+        if (CurrentFormats.Count == 0 && formats.Count == 0)
+            return;
+
         CurrentFormats = formats;
         OnFormatChange(formats);
     }
 
-    internal async Task SetAttrib(string command, string attrib, object? value)
+    private async Task GetSelectionInfo()
+    {
+        var selectionInfo = await _quillEditor!.InvokeAsync<SelectionInfo>("getSelectionInfo");
+        SetSelectionInfo(selectionInfo);
+    }
+
+    internal async Task SetAttrib(string command, string? attrib, object? value)
     {
         try
         {
-            await _quillEditor!.InvokeVoidAsync(command, attrib, value);
+            if (attrib == null)
+                await _quillEditor!.InvokeVoidAsync(command, CurrentSelection.Index, CurrentSelection.Length);
+            else
+                await _quillEditor!.InvokeVoidAsync(command, attrib, value);
         }
         catch
         {
             // ignored This is to suppress an error coming from Quill JS Lib.
         }
+        finally
+        {
+            await GetSelectionInfo();
+        }
     }
+
+    public record SelectionInfo(Dictionary<string, JsonValue> Formats, SelectionRange Range);
+    public record SelectionRange(int Index, int Length);
 }

@@ -94,7 +94,7 @@ public class ToolBarAction : Enumeration
     public static readonly ToolBarAction MathGroup = new(Group, options: new[] { Formula, Subscript, Superscript });
 
 
-    public static readonly ToolBarAction FormatClear = new(Btn, "removeFormat", "clear", "Clear Format", Icons.Filled.FormatClear);
+    public static readonly ToolBarAction FormatClear = new(Btn, "removeFormat", null!, "Clear Format", Icons.Filled.FormatClear);
 
 
     internal static readonly ToolBarAction Full =

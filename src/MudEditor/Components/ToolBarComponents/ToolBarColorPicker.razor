@@ -1,24 +1,55 @@
 ﻿@inherits ToolBarBase
 
 @namespace MudBlazor.Extensions.ToolBarComponents
-<div class="mud-editor-picker d-flex">
-    <MudColorPicker @ref="_picker" Text="@_colorValue" TextChanged="TextChanged" />
+
+<MudMenu @ref="_menu" AnchorOrigin="Origin.BottomLeft" Class="mud-editor-picker pa-0 ma-0" Color="@Editor.ToolBarColor" Dense="true" Icon="@Action.Icon" Style="@($"color: {_colorValue};")" PopoverClass="mud-editor-picker" Size="Size.Small" Variant="@Editor.ToolBarVariant" DisableRipple="true">
+    <div class="d-flex flex-column pa-1">
+        <MudButton Variant="Variant.Text" OnClick="@Automatic"><div class="mud-picker-color-dot" style="@_defaultColor"></div> Automatic</MudButton>
+        <MudColorPicker Text="_colorValue" TextChanged="TextChanged" PickerVariant="PickerVariant.Static" ColorPickerView="ColorPickerView.Palette"/>
+    </div>
+</MudMenu>
+@*    <MudMenuItem OnClick="@(() => Automatic())">
+        <div class="d-flex align-center gap-3">
+            <div class="mud-editor-picker-automatic mud-picker-color-dot" style="@_defaultColor"></div>
+            <MudText Typo="Typo.h5">Automatic</MudText>
+        </div>
+    </MudMenuItem>*@
+@*<div class="mud-editor-picker d-flex">
     <MudIconButton Color="@Editor.ToolBarColor" Icon="@Action.Icon" OnClick="@Open" Size="Size.Small" Style="@($"color: {_colorValue};")" Title="@Action.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
-</div>
+    <MudPopover Open="@_isOpen" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft" Class="mud-editor-picker">
+        <div class="d-flex flex-column pa-1">
+            <MudButton Variant="Variant.Text"><div class="mud-picker-color-dot" style="@_defaultColor"></div> Automatic</MudButton>
+            <MudColorPicker Text="@_colorValue" PickerVariant="PickerVariant.Static" ColorPickerView="ColorPickerView.Palette"/>
+        </div>
+    </MudPopover>
+</div>*@
 
 @code {
-    private MudColorPicker? _picker;
-    private string _colorValue = null!;
+    //private bool _isOpen;
+    //private MudColorPicker? _picker;
+    private string _colorValue = "";
+    private string _defaultColor = null!;
+    private MudMenu _menu = null!;
+
+    protected override void OnParametersSet() {
+        _defaultColor = $"background-color:{(Action.Equals(ToolBarAction.FontColor) ? "--mud-palette-primary-text" : "--mud-palette-background")};";
+        base.OnParametersSet();
+    }
 
     private async void TextChanged(string value) {
+        if (value == "#594ae2")
+            return;
+        _menu.CloseMenu();
         if(Value as string != value)
             await Editor.SetAttrib(Action.Command, Action.Attrib, value);
     }
 
     protected override void OnValueChanged() => _colorValue = (Value as string)!;
 
-    private void Open() {
-        _picker!.Open();
-    }
+    private void Automatic() => TextChanged(null!);
+
+    //private void Open() {
+    //    _isOpen = true;
+    //}
 
 }

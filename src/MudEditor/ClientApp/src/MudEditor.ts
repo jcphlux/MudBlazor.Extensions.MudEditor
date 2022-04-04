@@ -7,34 +7,28 @@ export class MudEditor {
         const options = { modules: { syntax: true }, placeholder: placeholder };
 
         this.quill = new Quill(quillElement, options);
-        this.quill.on("editor-change", this.editorChanged);
+        this.updateOn();
     }
 
 
-    private editorChanged = (eventName: any, ...args: any[]) => {
+    private editorChanged = (range, oldRange, source) => {
         const formats = this.quill.getFormat();
-        console.log(eventName, args);
-        this.dotnetHelper.invokeMethodAsync("QuillGetFormat", formats);
+        this.dotnetHelper.invokeMethodAsync("SetSelectionInfo", { formats, range });
     }
 
-    dispose = () => {
-        this.quill.off("editor-change", this.editorChanged);
+    getSelectionInfo = () => {
+        const formats = this.quill.getFormat();
+        const range = this.quill.getSelection();
+        return {formats, range};
     }
 
-    format = (attrib: string, value:any) => {
-        
-        this.quill.format(attrib, value);
-    }
+    dispose = () => this.quill.updateOff();
 
-    removeFormat = () => {
-        this.quill.removeFormat();
-    }
+    format = (attrib: string, value:any) => this.quill.format(attrib, value);
 
-    updateOn = () => {
-        this.quill.on("editor-change", this.editorChanged);
-    }
+    removeFormat = (index: Number, length: Number) => this.quill.removeFormat(index, length);
 
-    updateOff = () => {
-        this.quill.off("editor-change", this.editorChanged);
-    }
+    updateOn = () => this.quill.on("selection-change", this.editorChanged);
+
+    updateOff = () => this.quill.off("selection-change", this.editorChanged);
 }

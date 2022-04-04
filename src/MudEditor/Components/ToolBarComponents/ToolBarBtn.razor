@@ -1,8 +1,8 @@
 ﻿@inherits ToolBarBase
 @namespace MudBlazor.Extensions.ToolBarComponents
 <MudIconButton Color="@(Active? Editor.ToolBarActiveColor: Editor.ToolBarColor)" Icon="@Action.Icon" OnClick="@OnClick" Size="Size.Small" Title="@Action.Label" Variant="@Editor.ToolBarVariant"></MudIconButton>
-@code {
 
-    private async void OnClick() => await Editor.SetAttrib(Action.Command, Action.Attrib, Action.AttribValue == null || Action.AttribValue.Equals(Value)? null: Action.AttribValue);
+@code {
+    private async void OnClick() => await Editor.SetAttrib(Action.Command, Action.Attrib, Action.AttribValue == null || Action.AttribValue.Equals(Value) ? null : Action.AttribValue);
 
 }

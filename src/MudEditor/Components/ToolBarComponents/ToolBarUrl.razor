@@ -7,6 +7,9 @@
     private readonly DialogOptions _dialogOptions = new() { NoHeader = true };
 
     private async Task Open() {
+        if (Action.Equals(ToolBarAction.Link) && Editor.CurrentSelection.Length <= 0)
+            return;
+
         var url = (Value as string) ?? "";
         var parameters = new DialogParameters {
             {"Url", url},
