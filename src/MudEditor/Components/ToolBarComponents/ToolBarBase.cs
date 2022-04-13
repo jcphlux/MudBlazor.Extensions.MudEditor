@@ -6,10 +6,10 @@ public class ToolBarBase : ComponentBase, IDisposable
 {
     protected bool Active;
 
-    [CascadingParameter]
+    [Parameter]
     public MudEditor Editor { get; set; } = null!;
 
-    [CascadingParameter]
+    [Parameter]
     public ToolBarAction Action { get; set; } = null!;
 
     [Parameter]

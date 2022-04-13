@@ -95,12 +95,11 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
         if (JsRuntime != null && _dotNetObjectReference != null)
             await JsRuntime!.InvokeVoidAsync(
                 "MudEditor.remove",
-                _dotNetObjectReference,
-                _quillElement,
-                Placeholder);
+                _dotNetObjectReference);
 
         GC.SuppressFinalize(this);
     }
+
 
     internal event Action<Dictionary<string, object>> OnFormatChange = null!;
 
@@ -127,6 +126,7 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     public void SetSelectionInfo(SelectionInfo selectionInfo)
     {
         CurrentSelection = selectionInfo.Range;
+        Console.WriteLine("update");
         var formats = new Dictionary<string, object>();
 
         foreach (var (key, value) in selectionInfo.Formats)
@@ -170,5 +170,6 @@ public partial class MudEditor : MudComponentBase, IAsyncDisposable
     }
 
     public record SelectionInfo(Dictionary<string, JsonValue> Formats, SelectionRange Range);
+
     public record SelectionRange(int Index, int Length);
 }

@@ -5,11 +5,7 @@
 <div class="mud-editor-wrapper d-flex flex-column" onfocusout="@(() => UpdateOff())" onfocusin="@(() =>UpdateOn())">
     <MudPaper Class="@ToolBarClassname" Elevation="@ToolBarElevation" Outlined="@ToolBarOutlined" Square="@Square">
         @foreach (var action in _toolBarOption.Actions) {
-            <CascadingValue Value="@this">
-                <CascadingValue Value="@action">
-                    <DynamicComponent Type="@action.Type"/>
-                </CascadingValue>
-            </CascadingValue>
+            <DynamicComponent Type="@action.Type" Parameters="@action.Parameters(this)"/>
         }
     </MudPaper>
 

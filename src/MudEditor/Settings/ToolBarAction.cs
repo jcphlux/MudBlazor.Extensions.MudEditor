@@ -136,8 +136,13 @@ public class ToolBarAction : Enumeration
 
     internal string? Icon { get; }
 
-
     internal ReadOnlyCollection<ToolBarAction> Actions { get; }
+
+    internal IDictionary<string, object> Parameters(MudEditor editor) => new Dictionary<string, object>
+    {
+        {"Editor", editor},
+        {"Action", this}
+    };
 
     internal static ToolBarAction CustomToolBarOption(ToolBarGroup[] groups)
     {

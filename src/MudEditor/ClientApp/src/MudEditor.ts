@@ -2,7 +2,7 @@
 
 export class MudEditor {
     private quill;
-
+    private isOn = false;
     constructor(private dotnetHelper: any, quillElement: any, placeholder: any) {
         const options = { modules: { syntax: true }, placeholder: placeholder };
 
@@ -22,13 +22,27 @@ export class MudEditor {
         return {formats, range};
     }
 
-    dispose = () => this.quill.updateOff();
+    dispose = () => {
+          this.updateOff();
+    };
 
     format = (attrib: string, value:any) => this.quill.format(attrib, value);
 
     removeFormat = (index: Number, length: Number) => this.quill.removeFormat(index, length);
 
-    updateOn = () => this.quill.on("selection-change", this.editorChanged);
+    updateOn = () => {
+        if (this.isOn)
+            return;
 
-    updateOff = () => this.quill.off("selection-change", this.editorChanged);
+        this.quill.on("selection-change", this.editorChanged);
+        this.isOn = true;
+    };
+
+    updateOff = () => {
+        if (!this.isOn)
+            return;
+
+        this.quill.off("selection-change", this.editorChanged);
+        this.isOn = false;
+    };
 }

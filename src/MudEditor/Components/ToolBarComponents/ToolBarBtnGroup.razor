@@ -4,11 +4,7 @@
 <MudButtonGroup Class="pa-0 ma-0" Size="Size.Small" Variant="@Editor.ToolBarVariant" OverrideStyles="false">
     @foreach (var action in Action.Actions)
     {
-        <CascadingValue Value="@Editor">
-            <CascadingValue Value="@action">
-                <DynamicComponent Type="@action.Type"/>
-            </CascadingValue>
-        </CascadingValue>
+        <DynamicComponent Type="@action.Type" Parameters="@action.Parameters(Editor)"/>
     }
 </MudButtonGroup>
 
